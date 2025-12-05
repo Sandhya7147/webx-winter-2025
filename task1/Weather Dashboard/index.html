@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+ 
+  <head>
+    <meta charset="utf-8" />
+    <title>☔️ Weather Dashboard</title>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+
+    <header>
+      <h1>Weather Dashboard</h1>
+    </header>
+
+    <div class="search">
+      <input id="city-name" name="city-name" class="city-name" placeholder="Enter a city name/airport code/latitude longitude">
+
+      <div class="cw">
+        <label for="type">Current Weather or Forecast?</label><br />
+        <select id="type">
+          <option value="Current Weather">Current Weather</option>
+          <option value="Forecast">Forecast</option>
+        </select>
+      </div>
+
+      <div id="days-container"></div>
+      <button class="submit" id="submit">Search</button>
+      <br />
+
+    </div>
+    <section id="weather-details">
+    </section>
+
+    <footer>
+    </footer>
+    <script src="weather.js"></script>
+  </body>
+
+</html>

@@ -1,0 +1,89 @@
+body{
+    margin: 0;
+    padding-top: 3rem;
+    color:rgb(227, 222, 232);
+    background-color: #1a1a2e;
+
+}
+
+header{
+    text-align: center;
+}
+
+.search{
+    display:flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.city-name{
+    width: 20rem;
+    height: 2rem;
+}
+
+
+.submit{
+    border:none;
+    border-radius: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: azure;
+    cursor:pointer;
+}
+
+.submit:hover{
+    background-color:rgb(171, 129, 212);
+    
+}
+.city-heading{
+    color:rgb(229, 233, 236);
+    font-weight: bold;
+}
+
+.table-heading{
+    color:black;
+    font-weight:bolder;
+    text-align: center;
+}
+.tabular{
+    display: grid;
+}
+
+.heading{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    background-color: antiquewhite;
+    gap:1rem;
+}
+.content{
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    color:black;
+    background-color: rgb(220, 242, 252);
+    gap:1rem;
+}
+
+.rows{
+    text-align: center;
+}
+.error-message{
+    color:Red;
+    text-align:center;
+}
+.current{
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+.cw{
+    display: flex;
+    flex-direction: column;
+}
+#days{
+    width:15rem;
+}
+
+footer{
+    margin-top: 5rem;
+}
