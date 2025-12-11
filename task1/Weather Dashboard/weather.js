@@ -84,12 +84,7 @@ function addElementForecast(r,d) {
 }
 
 
-function displayData(r){
-    const c=r.current;
-    humidityEl.innerText=c.humidity;
-    windSpeedEl.innerText=`${c.gust_kph} km/h`;
-    tempEl.innerText=`${c.temp_c} degree Celsius`;
-}
+
 
 async function fetchData(d){
     try{
@@ -97,7 +92,7 @@ async function fetchData(d){
         let t=typeEl.value;
        
         console.log(city);
-        const API_KEY="YOUR_API_KEY";
+        const API_KEY='YOUR_API_KEY';
         const url=`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=${d}`;
         const response= await fetch(url);
         if (!response.ok) {
