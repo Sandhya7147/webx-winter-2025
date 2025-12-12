@@ -1,32 +1,15 @@
 import React,{ useState, useEffect } from 'react';
-import MovieCard from './MovieCard.jsx';
+import FetchMovies from './fetch.jsx';
 
 function App() {
+  const [isDisplayS, setIsDisplayS] = useState(false);
+  const [valueS, setvalueS] = useState({});
 
-  const [movies, setMovies] = useState([]);
-  async function fetchMovies(){
-    try{
-      const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-      console.log("helloooo")
-      //console.log(API_KEY); 
-      const URL=`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;        
-      const response= await fetch(URL);
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      const result = await response.json();
-      console.log(result);
-      setMovies(result.results);
-
-    }catch(error){
-      console.error(error);
-      console.log(`${error.message}`);
-    }
+  function HandleEnterClick1(){
+    setIsDisplayS(true);
+    const entryEl = document.getElementById('movie-entry');
+    setvalueS({query: entryEl.value, type: 'search'});
   }
-
-  useEffect(() => {
-    fetchMovies();
-  }, []);
 
   return (
 
@@ -40,18 +23,24 @@ function App() {
         SEARCH
       </h2>
 
-      <input type="text" placeholder="Enter a Movie title" className="w-full py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-      </input>
+      <div className='grid grid-cols-10 gap-3'>
+        <input id="movie-entry"type="text" placeholder="Enter a Movie title" className="col-span-9 w-full py-2 border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </input>
+        <button onClick={HandleEnterClick1} className='bg-[#E50914] rounded-full border border-[#E50914] focus:border-white'>
+        ENTER
+        </button>
+      </div>
+      <div className='mt-20'>
+      {isDisplayS && 
+        <FetchMovies query={valueS.query} n={5} type={valueS.type} />
+      }
+      </div>
       
       <h2 className='text-6xl font-extrabold text-white mt=5 mb-20 pt-20'>
         Popular
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-        {movies.map(movie => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+      <FetchMovies n={11} type='popular' />
 
     </div>
   );
