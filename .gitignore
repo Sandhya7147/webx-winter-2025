@@ -1,3 +1,4 @@
 .env
 /task2/movie/node_modules
 /task2/movie/dist
+/task1/Weather Dashboard/node_modules
