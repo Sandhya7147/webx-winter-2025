@@ -1,9 +1,13 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function MovieCard({ movie }) {
+  const navigate = useNavigate();
+  function handleClickCard(){
+    navigate(`/movie/${movie.id}`);
+  }
   
   return (
-    <div className="bg-gray-800 rounded-lg overflow-hidden transform transition duration-300 hover:scale-[1.06] cursor-pointer">
+    <div onClick={handleClickCard} className="bg-gray-800 rounded-lg overflow-hidden transform transition duration-300 hover:scale-[1.06] cursor-pointer">
       
       <img 
         src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
