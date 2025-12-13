@@ -93,7 +93,7 @@ async function fetchData(d){
        
         console.log(city);
         const API_KEY= import.meta.env.VITE_WEATHER_API_KEY;
-        const url=`http://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=${d}`;
+        const url=`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=${d}`;
         const response= await fetch(url);
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
