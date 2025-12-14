@@ -8,7 +8,7 @@ function MovieDetail(){
   const params = useParams(); 
   const movieId = params.movieId;
   const [gs, setGs]= useState([]);
-
+  const [isLoading, setIsLoading]=useState(true);
   async function inter(){
     console.log('inside inter of MovieDetail');
     try{
@@ -26,8 +26,12 @@ function MovieDetail(){
       console.error(error);
       console.log(`${error.message}`);
     }
+    setIsLoading(false);
   }
   useEffect(()=>{inter();}, [movieId]);
+  if(isLoading){
+    return(<div className='font-mono text-center text-4xl'>Loading 🔄</div>)
+  }
   return(
     <div className='grid grid-cols-8 gap-6'>
       <div className='grid justify-center col-span-3'>
