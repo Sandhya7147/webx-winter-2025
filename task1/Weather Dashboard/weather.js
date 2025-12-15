@@ -90,7 +90,7 @@ async function fetchData(d){
     try{
         let city=searchEl.value;
         let t=typeEl.value;
-       
+        submit_button.disabled = true;
         console.log(city);
         const API_KEY= import.meta.env.VITE_WEATHER_API_KEY;
         const url=`https://api.weatherapi.com/v1/forecast.json?key=${API_KEY}&q=${city}&days=${d}`;
@@ -126,7 +126,10 @@ async function fetchData(d){
             let message ='PLEASE CHOOSE CURRENT WEATHER/ FORECAST';
             addDiv(className,message);
         }
+    } finally{
+        submit_button.disabled = false;
     }
+    
 }
 
 function handleSearchClick() {
