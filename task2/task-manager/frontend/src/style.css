@@ -1,0 +1,37 @@
+body{
+    margin: 0;
+    padding-top: 3rem;
+    color:rgb(227, 222, 232);
+    background-color: #1a1a2e;
+
+}
+
+header{
+    text-align: center;
+}
+
+.search{
+    display:flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+#task-name{
+    width: 20rem;
+    height: 2rem;
+}
+
+.submit{
+    border:none;
+    border-radius: 1rem;
+    width: 5rem;
+    height: 2rem;
+    background-color: azure;
+    cursor:pointer;
+}
+
+.submit:hover{
+    background-color:rgb(171, 129, 212);
+    
+}
