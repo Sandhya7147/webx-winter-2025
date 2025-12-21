@@ -17,11 +17,30 @@ header{
     align-items: center;
 }
 
+.error{
+    color:red;
+    margin-top: 1rem;
+}
+.success{
+    color:green;
+    margin-top: 1rem;
+}
+
 #task-name{
     width: 20rem;
     height: 2rem;
 }
-
+#task-man-head{
+    text-align: center;
+}
+#task-details{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+}
+.task-box{
+    background-color:black;
+}
 .submit{
     border:none;
     border-radius: 1rem;
@@ -34,4 +53,28 @@ header{
 .submit:hover{
     background-color:rgb(171, 129, 212);
     
+}
+.hidden{
+    display: none !important;
+}
+
+#logout{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#auth-modal{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#login-modal,
+#signup-modal,
+#task-details{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:1rem;
 }

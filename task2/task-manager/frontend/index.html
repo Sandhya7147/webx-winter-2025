@@ -9,20 +9,50 @@
   </head>
 
   <body>
+    <dialog id="auth-modal">
+      <div>
+        <button type='button' id="login-button">LOGIN</button>
+        <button type='button' id="signup-button">SIGN UP</button>
+      </div>
+      <form id="login-modal">
+        <h1>LOGIN</h1>
+        <input id="username-l" placeholder="Enter username">
+        <input id="password-l" placeholder="Enter password">
+        <br />
+        <button type='button' id="login-confirm">LOGIN</button>
+      </form>
 
-    <header>
-      <h1>Task Manager</h1>
-    </header>
+      <form id="signup-modal">
+        <h1>SIGN UP</h1>
+        <input id="username-s" placeholder="Enter username">
+        <input id="password-s" placeholder="Enter password">
+        <br />
+        <button type='button' id="signup-confirm">SIGN UP</button>
+      </form>
+      
+      <div class="message" id="message"></div>
+    </dialog>
 
-    <div class="search">
-      <input id="task-name" name="task-name"  placeholder="Enter a task">
-      <button class="submit" id="submit">Search</button>
-      <br />
+    <div id="main-app">
+      <header>
+      <h1 >Task Manager</h1>
+      </header>
+
+      <div class="search">
+        <input id="task-name" name="task-name"  placeholder="Enter a task">
+        <button class="submit" id="submit">ADD</button>
+        <br />
+      </div>
+
+      <h1 id="task-man-head">TODO TASKS</h1>
+      <section id="task-details">
+      </section>
+
+      <div id="logout">
+        <button id="logout-button">LOGOUT</button>
+      </div>
     </div>
-
-    <section id="task-details">
-    </section>
-
+    
     <script type="module" src="/src/task.js"></script>
   </body>
 
