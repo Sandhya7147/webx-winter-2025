@@ -40,6 +40,10 @@ header{
 }
 .task-box{
     background-color:black;
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+    gap:1rem;
+    width: 50%;
 }
 .task-box:hover {
     background-color: #f9f9f9;

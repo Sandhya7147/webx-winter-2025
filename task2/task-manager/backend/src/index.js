@@ -10,7 +10,7 @@ const { Client } = require('pg');
 app.use(
   cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PATCH']
+    methods: ['GET', 'POST', 'PATCH', 'DELETE']
   })
 );
 app.use(express.json());
@@ -135,11 +135,27 @@ app.get('/tasks/get',authenticateToken,async (req,res)=>{
 
 });
 
+app.delete('/tasks/:id/delete', authenticateToken, async (req, res) => {
+  const id=req.params.id;
+  const user_id=req.user.id;
+  const queryText = 'DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *';
+  const values = [id, user_id];
+  try{
+    const resdb = await client.query(queryText, values);
+    console.log(resdb);
+    console.log("Row deleted", resdb.rows[0]);
+    res.status(200).json(resdb.rows[0]);
+  }catch(error){
+    console.error(`inside post query${error.message}`);
+  }
+});
+
 app.patch('/tasks/patch', authenticateToken, async (req, res) => {
   const id=req.body.id;
+  const user_id=req.user.id;
   const completed=req.body.completed;
-  const queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *';
-  const values = [completed, id];
+  const queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 AND user_id = $3 RETURNING *';
+  const values = [completed, id, user_id];
   try{
     const resdb = await client.query(queryText, values);
     console.log(resdb);

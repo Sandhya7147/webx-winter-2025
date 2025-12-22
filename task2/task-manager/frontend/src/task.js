@@ -46,7 +46,7 @@ function addDiv(className,task){
     const newdiv = document.createElement("div");
     const newinput = document.createElement("input");
     const newlabel = document.createElement("label");
-
+    const deletebtn = document.createElement("button");
     newinput.checked = task.completed; 
     if (task.completed) {
         newlabel.classList.add('strikethrough');
@@ -56,25 +56,28 @@ function addDiv(className,task){
     }
     const dbid=task.id;
     
-
+    deletebtn.innerText = "Delete";
+    deletebtn.classList.add("delete-btn")
     newdiv.classList.add(className);
     newinput.type="checkbox";
     newinput.id="id-"+dbid;
-    newinput.value = dbid;
     newlabel.htmlFor = "id-"+dbid;
     newinput.addEventListener('change', function() {
-        const rawId = this.value;
         if (this.checked) {
             newlabel.classList.add('strikethrough');
-            updateData(rawId,true);
+            updateData(dbid,true);
         }else {
             newlabel.classList.remove('strikethrough');
-            updateData(rawId,false);
+            updateData(dbid,false);
         }
+    });
+    deletebtn.addEventListener('click', function() {
+        deleteData(dbid); 
     });
     newlabel.innerText=message;
     newdiv.appendChild(newinput);
     newdiv.appendChild(newlabel);
+    newdiv.appendChild(deletebtn);
     container.appendChild(newdiv);
 }
 
@@ -178,12 +181,31 @@ async function updateData(task_id,completed){
         await getData();
     } catch(error){
         console.error(error);
-    } finally{
-        submit_button.disabled = false;
     }
     
 }
+async function deleteData(task_id){
+    try{
+        const token=localStorage.getItem('jwttoken');
+        const response= await fetch(`${BASE_URL}/tasks/${task_id}/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
 
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log(`inside task.js ${result}`);
+        await getData();
+    } catch(error){
+        console.error(error);
+    }
+    
+}
 function handleSearchClick() {
     container.innerHTML = ""; 
     postData();
