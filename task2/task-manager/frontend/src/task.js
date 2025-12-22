@@ -72,7 +72,7 @@ function addDiv(className,task){
         }
     });
     deletebtn.addEventListener('click', function() {
-        deleteData(dbid); 
+        deleteData(dbid,newdiv); 
     });
     newlabel.innerText=message;
     newdiv.appendChild(newinput);
@@ -115,7 +115,8 @@ async function postData(){
         
         const result = await response.json();
         console.log(`inside task.js ${result}`);
-        await getData();
+        addDiv('task-box', result);
+        searchEl.value = "";
     } catch(error){
         console.error(error);
     } finally{
@@ -178,13 +179,12 @@ async function updateData(task_id,completed){
         
         const result = await response.json();
         console.log(`inside task.js ${result}`);
-        await getData();
     } catch(error){
         console.error(error);
     }
     
 }
-async function deleteData(task_id){
+async function deleteData(task_id,newdiv){
     try{
         const token=localStorage.getItem('jwttoken');
         const response= await fetch(`${BASE_URL}/tasks/${task_id}/delete`, {
@@ -197,17 +197,15 @@ async function deleteData(task_id){
         if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
-        
+        newdiv.remove();
         const result = await response.json();
         console.log(`inside task.js ${result}`);
-        await getData();
     } catch(error){
         console.error(error);
     }
     
 }
 function handleSearchClick() {
-    container.innerHTML = ""; 
     postData();
 }
 
