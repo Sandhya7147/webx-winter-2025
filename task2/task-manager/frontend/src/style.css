@@ -41,6 +41,15 @@ header{
 .task-box{
     background-color:black;
 }
+.task-box:hover {
+    background-color: #f9f9f9;
+    color:black;
+    cursor: pointer;
+}
+.strikethrough {
+    text-decoration: line-through;
+    color: gray;
+}
 .submit{
     border:none;
     border-radius: 1rem;

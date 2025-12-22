@@ -10,9 +10,9 @@ const { Client } = require('pg');
 app.use(
   cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST']
+    methods: ['GET', 'POST', 'PATCH']
   })
-)
+);
 app.use(express.json());
 
 const envPath = path.resolve(__dirname, '../../../../.env');
@@ -121,21 +121,34 @@ app.post('/signup',async (req, res) => {
 });
 
 app.get('/tasks/get',authenticateToken,async (req,res)=>{
-
-  //const task=req.body.title;
   const user_id=req.user.id;
-  const queryText = 'SELECT * FROM tasks WHERE user_id=$1';
+  const queryText = 'SELECT * FROM tasks WHERE user_id=$1 ORDER BY id ASC';
   const values = [user_id];
   try{
     const resdb = await client.query(queryText, values);
     console.log(resdb);
     console.log("Rows retrieved", resdb.rows);
-    res.status(201).json(resdb.rows);
+    res.status(200).json(resdb.rows);
   }catch(error){
     console.error(`inside post query${error.message}`);
   }
 
-})
+});
+
+app.patch('/tasks/patch', authenticateToken, async (req, res) => {
+  const id=req.body.id;
+  const completed=req.body.completed;
+  const queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *';
+  const values = [completed, id];
+  try{
+    const resdb = await client.query(queryText, values);
+    console.log(resdb);
+    console.log("Row modified", resdb.rows[0]);
+    res.status(200).json(resdb.rows[0]);
+  }catch(error){
+    console.error(`inside post query${error.message}`);
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

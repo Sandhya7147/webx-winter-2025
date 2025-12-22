@@ -41,10 +41,40 @@ else{
     getData();
 }
 
-function addDiv(className,message){
+function addDiv(className,task){
+    const message= task.title;
     const newdiv = document.createElement("div");
+    const newinput = document.createElement("input");
+    const newlabel = document.createElement("label");
+
+    newinput.checked = task.completed; 
+    if (task.completed) {
+        newlabel.classList.add('strikethrough');
+    }
+    else{
+        newlabel.classList.remove('strikethrough');
+    }
+    const dbid=task.id;
+    
+
     newdiv.classList.add(className);
-    newdiv.innerText=message;
+    newinput.type="checkbox";
+    newinput.id="id-"+dbid;
+    newinput.value = dbid;
+    newlabel.htmlFor = "id-"+dbid;
+    newinput.addEventListener('change', function() {
+        const rawId = this.value;
+        if (this.checked) {
+            newlabel.classList.add('strikethrough');
+            updateData(rawId,true);
+        }else {
+            newlabel.classList.remove('strikethrough');
+            updateData(rawId,false);
+        }
+    });
+    newlabel.innerText=message;
+    newdiv.appendChild(newinput);
+    newdiv.appendChild(newlabel);
     container.appendChild(newdiv);
 }
 
@@ -108,8 +138,7 @@ async function getData(){
         const result = await response.json();
         console.log(`inside task.js ${result}`);
         for (const task of result) {
-            const title= task.title;
-            addDiv('task-box',title);
+            addDiv('task-box',task);
         }
         
     } catch(error){
@@ -125,16 +154,48 @@ async function getData(){
     
 }
 
+async function updateData(task_id,completed){
+    try{
+        const token=localStorage.getItem('jwttoken');
+        const response= await fetch(`${BASE_URL}/tasks/patch`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+            id: task_id,
+            completed: completed
+            }) 
+        });
+
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        
+        const result = await response.json();
+        console.log(`inside task.js ${result}`);
+        await getData();
+    } catch(error){
+        console.error(error);
+    } finally{
+        submit_button.disabled = false;
+    }
+    
+}
+
 function handleSearchClick() {
     container.innerHTML = ""; 
     postData();
 }
 
 function handleLoginClick() {
+    message_container.innerHTML="";
     login_container.classList.remove('hidden');
     signup_container.classList.add('hidden');
 }
 function handleSignupClick() {
+    message_container.innerHTML="";
     login_container.classList.add('hidden');
     signup_container.classList.remove('hidden');
 }
