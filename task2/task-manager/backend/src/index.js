@@ -82,10 +82,14 @@ app.post('/login',async (req, res) => {
     }
 
     const row=resdb.rows[0];
-    const user={id:row.id, username:row.username}
+    const user={id:row.id, username:row.username, isAdmin:username==='admin'}
     const accessToken= jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
-    res.status(201).json({accessToken:accessToken});
+    res.status(201).json({
+      accessToken:accessToken,
+      isAdmin:user.isAdmin,
+      username:row.username
+    });
   }catch(error){
 
     console.error(`inside login post query${error.message}`);
@@ -130,7 +134,7 @@ app.get('/tasks/get',authenticateToken,async (req,res)=>{
     console.log("Rows retrieved", resdb.rows);
     res.status(200).json(resdb.rows);
   }catch(error){
-    console.error(`inside post query${error.message}`);
+    console.error(`inside get query${error.message}`);
   }
 
 });
@@ -138,15 +142,25 @@ app.get('/tasks/get',authenticateToken,async (req,res)=>{
 app.delete('/tasks/:id/delete', authenticateToken, async (req, res) => {
   const id=req.params.id;
   const user_id=req.user.id;
-  const queryText = 'DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *';
-  const values = [id, user_id];
+  const isAdmin = req.user.isAdmin;
+  let queryText;
+  let values;
+  //both admin and user delete endpoint
+  if (isAdmin) {
+    queryText = 'DELETE FROM tasks WHERE id = $1 RETURNING *';
+    values = [id];
+  }else {
+    queryText = 'DELETE FROM tasks WHERE id = $1 AND user_id = $2 RETURNING *';
+    values = [id, user_id];
+  }
+
   try{
     const resdb = await client.query(queryText, values);
     console.log(resdb);
     console.log("Row deleted", resdb.rows[0]);
     res.status(200).json(resdb.rows[0]);
   }catch(error){
-    console.error(`inside post query${error.message}`);
+    console.error(`inside delete query${error.message}`);
   }
 });
 
@@ -154,15 +168,56 @@ app.patch('/tasks/patch', authenticateToken, async (req, res) => {
   const id=req.body.id;
   const user_id=req.user.id;
   const completed=req.body.completed;
-  const queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 AND user_id = $3 RETURNING *';
-  const values = [completed, id, user_id];
+  const isAdmin = req.user.isAdmin;
+   
+  let queryText;
+  let values; 
+  // both user and admin patch endpoint
+  if (isAdmin) {
+    queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 RETURNING *';
+    values = [completed,id];
+  }else {
+    queryText = 'UPDATE tasks SET completed = $1 WHERE id = $2 AND user_id = $3 RETURNING *';
+    values = [completed, id, user_id]; 
+  }
   try{
     const resdb = await client.query(queryText, values);
     console.log(resdb);
     console.log("Row modified", resdb.rows[0]);
     res.status(200).json(resdb.rows[0]);
   }catch(error){
-    console.error(`inside post query${error.message}`);
+    console.error(`inside patch query${error.message}`);
+  }
+});
+
+app.get('/admin/tasks/get',authenticateToken,async (req,res)=>{
+  const isAdmin=req.user.isAdmin;
+  const queryText = `
+  SELECT 
+    tasks.id, 
+    tasks.title, 
+    tasks.completed, 
+    users.username 
+  FROM tasks 
+  JOIN users ON tasks.user_id = users.id 
+  ORDER BY tasks.user_id ASC, tasks.id ASC
+`;
+  try{
+    if(isAdmin){
+      const resdb = await client.query(queryText);
+      console.log(resdb);
+      console.log("Rows retrieved", resdb.rows);
+      res.status(200).json(resdb.rows);
+    }
+    else{
+      throw new Error('403: Forbidden');
+    }
+  }
+  catch(error){
+    console.error(`inside admin get query${error.message}`);
+    if(error.message.includes('403')){
+      res.status(403).json({'message':'403: Forbidden'});
+    }
   }
 });
 

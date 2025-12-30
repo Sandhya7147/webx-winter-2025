@@ -71,7 +71,8 @@ header{
     display: none !important;
 }
 
-#logout{
+#logout, 
+#logout-admin{
     margin-top: 1rem;
     display: flex;
     flex-direction: row;
@@ -90,4 +91,44 @@ header{
     flex-direction: column;
     align-items: center;
     gap:1rem;
+}
+#error-admin,
+#error-main{
+    color:red;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+#greetings{
+    text-align: center;
+    margin-bottom: 2rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#admin-table {
+    width: 100%;
+    margin-top: 2rem;
+    background-color: #1e1e24; 
+}
+
+#admin-table th, #admin-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #444;
+}
+
+#admin-table th {
+    background-color: #333;
+    color: #fff;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+#admin-table-body tr:hover {
+    background-color: #2a2a2a;
+}
+
+.action-cell{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap:2rem;
 }
